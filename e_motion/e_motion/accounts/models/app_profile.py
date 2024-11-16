@@ -1,3 +1,5 @@
+from datetime import timezone
+
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -57,6 +59,22 @@ class Profile(models.Model):
 
     # This field is used to keep track of the number of times a user has not attended a class for which he booked a slot
     non_attendance_count = models.PositiveIntegerField(default=0)
+
+    # enrolled_trainings = models.ManyToManyField(
+    #     to='trainings.TrainingSession',
+    #     related_name='enrolled_trainings',
+    #     blank=True,
+    # )
+    #
+    # attended_trainings = models.ManyToManyField(
+    #     to='trainings.TrainingSession',
+    #     related_name='attended_trainings',
+    #     blank=True,
+    # )
+    #
+    # def next_class(self):
+    #     """Returns the next class the student is enrolled in."""
+    #     return self.enrolled_trainings.filter(date__gte=timezone.now()).order_by('date').first()
 
     def __str__(self):
         return f"{self.user.username}'s Profile"

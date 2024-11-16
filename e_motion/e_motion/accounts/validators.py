@@ -15,3 +15,13 @@ class PhoneNumberValidator:
     def __call__(self, value):
         if not self.regex.match(value):
             raise ValidationError(self.message, code=self.code)
+
+
+@deconstructible
+class CapitalizedValidator:
+    message = "Name must start with a capital letter."
+    code = "not_capitalized"
+
+    def __call__(self, value):
+        if not value or not value[0].isupper():
+            raise ValidationError(self.message, code=self.code)

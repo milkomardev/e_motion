@@ -1,0 +1,66 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container profile-container">
+        <!-- Left Section: Profile Details -->
+        <div class="profile-details">
+            {% if user.profile.profile_picture %}
+                <img src="{{ user.profile.profile_picture }}" alt="Profile Picture" class="profile-picture">
+            {% else %}
+                <img src="{% static 'images/person.png' %}" alt="Profile Picture" class="profile-picture">
+            {% endif %}
+
+            <h3>{{ user.get_full_name }}</h3>
+
+            <p><strong>Email:</strong> {{ user.email }}</p>
+
+            {% if user.profile.date_of_birth %}
+                <p><strong>Date of Birth:</strong> {{ user.profile.date_of_birth }}</p>
+            {% endif %}
+
+            {% if user.profile.date_of_birth %}
+                <p><strong>Phone Number:</strong> {{ user.profile.phone_number }}</p>
+            {% endif %}
+
+            <hr class="profile-divider"> <!-- Thin Line -->
+
+            <div class="profile-actions">
+                <a href="{% url 'profile-edit' request.user.pk %}" class="btn btn-primary" >Edit</a>
+                <a href="{% url 'profile-delete' request.user.pk %}" class="btn btn-primary" >Delete</a>
+            </div>
+        </div>
+
+        <!-- Middle Section: Training Details -->
+        <div class="training-details">
+            <!-- Upcoming Training -->
+            <div class="next-training">
+                <h4>Next Training</h4>
+                {% if user.profile.next_training %}
+                    <p><strong>Date:</strong> {{ user.profile.next_training.date }}</p>
+                    <p><strong>Time:</strong> {{ user.profile.next_training.time }}</p>
+                    <p><strong>Class:</strong> {{ user.profile.next_training.class_name }}</p>
+                {% else %}
+                    <p>No upcoming training sessions.</p>
+                {% endif %}
+            </div>
+
+            <!-- Past Trainings -->
+            <div class="past-trainings">
+                <h4>Past Trainings</h4>
+                {% if user.profile.past_trainings.exists %}
+                    <ul>
+                        {% for training in user.profile.past_trainings %}
+                            <li>
+                                <strong>Date:</strong> {{ training.date }} -
+                                <strong>Class:</strong> {{ training.class_name }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No past training sessions available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
