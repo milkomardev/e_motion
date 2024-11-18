@@ -32,9 +32,22 @@ class UserRegisterView(CreateView):
 
 
 class ProfileDetailsView(LoginRequiredMixin, DetailView):
-    model = UserModel
+    model = Profile
     template_name = 'account/profile-details.html'
     context_object_name = 'profile'
+
+    def get_object(self, queryset=None):
+        pk = self.kwargs.get('pk')
+        return get_object_or_404(Profile, pk=pk)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = self.object
+
+        context['next_training'] = profile.next_training()
+        context['attended_trainings'] = profile.attended_trainings.all()
+
+        return context
 
 
 class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):

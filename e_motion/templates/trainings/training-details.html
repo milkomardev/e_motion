@@ -1,0 +1,21 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container training-detail-container">
+    <h1>{{ training.title }}</h1>
+
+    <div class="training-image">
+        <img src="{{ training.picture }}" alt="{{ training.title }}">
+    </div>
+
+    <div class="training-description">
+        <p>{{ training.description }}</p>
+    </div>
+
+    <div class="training-instructor">
+        <h3>Instructor: {{ training.instructor.get_full_name }}</h3>
+        <img src="{{ training.instructor.profile.profile_picture }}" alt="{{ training.instructor.get_full_name }}" class="instructor-picture">
+    </div>
+</div>
+{% endblock %}

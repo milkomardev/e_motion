@@ -1,6 +1,6 @@
 <nav>
     <ul>
-        <li><a href="#">Classes</a></li>
+        <li><a href="{% url 'trainings-list' %}">Trainings</a></li>
         <li><a href="#">Team</a></li>
         <li><a href="#">Schedule</a></li>
         <li><a href="#">Gallery</a></li>
@@ -41,11 +41,12 @@
 <!-- Mobile Dropdown Menu -->
 <div class="mobile-menu" id="mobileMenu" style="display: none;">
     <ul>
-        <li><a href="#schedule">Schedule</a></li>
-        <li><a href="#classes">Classes</a></li>
-        <li><a href="#team">Team</a></li>
-        <li><a href="#gallery">Gallery</a></li>
-        <li><a href="#contacts">Contacts</a></li>
+        <li><a href="{% url 'trainings-list' %}">Trainings</a></li>
+        <li><a href="#">Team</a></li>
+        <li><a href="#">Schedule</a></li>
+        <li><a href="#">Gallery</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Contacts</a></li>
         {% if not request.user.is_authenticated %}
             <li class="nav-item">
                 <!-- Link to Login Page -->

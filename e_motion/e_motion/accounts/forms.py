@@ -38,6 +38,9 @@ class ProfileEditForm(forms.ModelForm):
             'date_of_birth',
             'profile_picture',
         )
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+        }
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)  # Extract the user instance if provided
