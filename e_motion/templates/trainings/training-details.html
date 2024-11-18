@@ -2,20 +2,26 @@
 {% load static %}
 
 {% block content %}
-<div class="container training-detail-container">
-    <h1>{{ training.title }}</h1>
+    <div class="container training-detail-container">
+        <h1>{{ training.title }}</h1>
 
-    <div class="training-image">
-        <img src="{{ training.picture }}" alt="{{ training.title }}">
-    </div>
+        <div class="training-image">
+            <img src="{{ training.picture }}" alt="{{ training.title }}">
+        </div>
 
-    <div class="training-description">
-        <p>{{ training.description }}</p>
-    </div>
+        <div class="training-description">
+            <p>{{ training.description }}</p>
+        </div>
 
-    <div class="training-instructor">
-        <h3>Instructor: {{ training.instructor.get_full_name }}</h3>
-        <img src="{{ training.instructor.profile.profile_picture }}" alt="{{ training.instructor.get_full_name }}" class="instructor-picture">
+        <div class="training-instructor">
+            <h3>Instructor: {{ training.instructor.get_full_name }}</h3>
+            <img src="{{ training.instructor.profile.profile_picture }}" alt="{{ training.instructor.get_full_name }}"
+                 class="instructor-picture">
+        </div>
+
+        <div class="training-actions">
+            <a href="{% url 'training-edit' training.pk %}" class="btn btn-primary">Edit</a>
+            <a href="{% url 'training-delete' training.pk %}" class="btn btn-danger">Delete</a>
+        </div>
     </div>
-</div>
 {% endblock %}

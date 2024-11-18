@@ -18,7 +18,7 @@ class TrainingSchedule(models.Model):
         to=UserModel,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='instructor_trainings',
+        related_name='instructor',
     )
 
     students = models.ManyToManyField(

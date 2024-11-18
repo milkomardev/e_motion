@@ -7,31 +7,29 @@
         <li><a href="#">Pricing</a></li>
         <li><a href="#">Contacts</a></li>
         {% if not request.user.is_authenticated %}
-            <li class="nav-item">
-                <!-- Link to Login Page -->
+            <li>
                 <a href="{% url 'login' %}">
                     Login
                 </a>
             </li>
-            <li class="nav-item">
-
-                <!-- Link to Register Page -->
+            <li>
                 <a href="{% url 'register' %}">
                     Register
                 </a>
             </li>
         {% else %}
-            <li class="nav-item">
-                <!-- Link to Profile Page -->
+            <li>
                 <a href="{% url 'profile-details' request.user.pk %}">
-                    <i>Profile</i>
+                    Profile
                 </a>
             </li>
 
-            <form method="post" action="{% url 'logout' %}">
-                {% csrf_token %}
-                <button class="button" type="submit"><i>Logout</i></button>
-            </form>
+            <li>
+                <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
+                    Logout
+                </a>
+            </li>
+
         {% endif %}
 
     </ul>
@@ -48,25 +46,33 @@
         <li><a href="#">Pricing</a></li>
         <li><a href="#">Contacts</a></li>
         {% if not request.user.is_authenticated %}
-            <li class="nav-item">
-                <!-- Link to Login Page -->
-                <a href="#">
+            <li>
+                <a href="{% url 'login' %}">
                     Login
                 </a>
             </li>
-            <li class="nav-item">
-                <!-- Link to Register Page -->
-                <a href="#">
+            <li>
+                <a href="{% url 'register' %}">
                     Register
                 </a>
             </li>
         {% else %}
-            <li class="nav-item">
-                <!-- Link to Profile Page -->
-                <a href="#">
-                    <i>Profile</i>
+            <li>
+                <a href="{% url 'profile-details' request.user.pk %}">
+                    Profile
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
+                    Logout
                 </a>
             </li>
         {% endif %}
     </ul>
 </div>
+
+
+<form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
+    {% csrf_token %}
+</form>
