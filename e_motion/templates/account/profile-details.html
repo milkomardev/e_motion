@@ -38,7 +38,7 @@
             <div class="training-details">
 
                 <div class="next-training">
-                    <h4>Next Training</h4>
+                    <h4>Next Session</h4>
                     {% if profile.next_training %}
                         <p><strong>Date:</strong> {{ profile.next_training.date|date:"F j, Y" }}</p>
                         <p><strong>Time:</strong> {{ profile.next_training.date|date:"H:i" }}</p>
@@ -51,7 +51,7 @@
 
 
                 <div class="past-trainings">
-                    <h4>Past Trainings</h4>
+                    <h4>Past Sessions</h4>
                     {% if profile.attended_trainings.exists %}
                         <ul>
                             {% for training in profile.attended_trainings.all %}
@@ -62,7 +62,7 @@
                             {% endfor %}
                         </ul>
                     {% else %}
-                        <p>No past training sessions available.</p>
+                        <p>No training sessions attended yet.</p>
                     {% endif %}
                 </div>
             </div>

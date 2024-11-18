@@ -10,7 +10,12 @@ class BaseTrainingScheduleForm(forms.ModelForm):
 
 
 class TrainingCreateForm(BaseTrainingScheduleForm):
-    pass
+    class Meta:
+        model = TrainingSchedule
+        fields = '__all__'
+        widgets = {
+            'date': forms.DateTimeInput(attrs={'type': 'date'}),
+        }
 
 
 class TrainingEditForm(BaseTrainingScheduleForm):

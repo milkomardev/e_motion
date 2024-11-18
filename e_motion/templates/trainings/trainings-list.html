@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="container trainings-container">
-    <h1 class="page-title">All Trainings</h1>
+    <h1 class="page-title">All Activities</h1>
 
     <div class="training-cards">
         {% for training in trainings %}
@@ -16,7 +16,7 @@
         {% endfor %}
 
         <div class="create-training-wrapper">
-        <a href="{% url 'training-create' %}" class="btn-success create-training-button">Create Training</a>
+        <a href="{% url 'training-create' %}" class="btn-success create-training-button">Create Activity</a>
         </div>
     </div>
 </div>

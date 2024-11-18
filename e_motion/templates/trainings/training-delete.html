@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container delete-confirm-container">
     <h1>Confirm Deletion</h1>
-    <p>Are you sure you want to delete the training "<strong>{{ training.title|capfirst }}</strong>"?</p>
+    <p>Are you sure you want to delete the activity "<strong>{{ training.title|capfirst }}</strong>"?</p>
 
     <form method="post">
         {% csrf_token %}
