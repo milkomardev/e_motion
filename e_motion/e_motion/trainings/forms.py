@@ -1,17 +1,17 @@
 from django import forms
 
-from e_motion.trainings.models import TrainingSchedule
+from e_motion.trainings.models import Training
 
 
 class BaseTrainingScheduleForm(forms.ModelForm):
     class Meta:
-        model = TrainingSchedule
+        model = Training
         fields = '__all__'
 
 
 class TrainingCreateForm(BaseTrainingScheduleForm):
     class Meta:
-        model = TrainingSchedule
+        model = Training
         fields = '__all__'
         widgets = {
             'date': forms.DateTimeInput(attrs={'type': 'date'}),

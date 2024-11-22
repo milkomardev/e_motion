@@ -57,16 +57,16 @@ class Profile(models.Model):
     attendance_limit = models.PositiveIntegerField(default=0, choices=AttendanceLimitChoices.choices)
     attendance_count = models.PositiveIntegerField(default=0)
 
-    non_attendance_count = models.PositiveIntegerField(default=0)
+    # non_attendance_count = models.PositiveIntegerField(default=0)
 
     attended_trainings = models.ManyToManyField(
-        to='trainings.TrainingSchedule',
+        to='schedule.Schedule',
         related_name='attended_trainings',
         blank=True,
     )
 
     def next_training(self):
-        return self.user.enrolled_trainings.filter(date__gte=now()).order_by('date').first()
+        return self.user.scheduled_trainings.filter(date__gte=now()).order_by('date').first()
 
     def __str__(self):
         return f"{self.user.get_full_name()}'s Profile"

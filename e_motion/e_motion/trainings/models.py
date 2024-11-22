@@ -4,13 +4,14 @@ from django.db import models
 UserModel = get_user_model()
 
 
-class TrainingSchedule(models.Model):
+class Training(models.Model):
+
     title = models.CharField(
+        unique=True,
         max_length=100
     )
 
     description = models.TextField()
-    date = models.DateTimeField()
 
     picture = models.URLField()
 
@@ -19,12 +20,6 @@ class TrainingSchedule(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         related_name='instructor',
-    )
-
-    students = models.ManyToManyField(
-        to=UserModel,
-        related_name='enrolled_trainings',
-        blank=True,
     )
 
     def __str__(self):
