@@ -2,54 +2,74 @@
 {% load static %}
 
 {% block content %}
+
+    <!-- Week Navigation -->
+    <div class="week-navigation">
+        <div class="week-range">
+            <h2>Week: {{ week_range }}</h2>
+        </div>
+        <div class="week-buttons">
+            {% if has_previous_week %}
+                <a href="?week={{ week_offset|add:"-1" }}" class="btn btn-secondary">
+                    &#8592; <!-- Left Arrow -->
+                </a>
+            {% else %}
+                <button class="btn btn-secondary" disabled>
+                    &#8592; <!-- Left Arrow -->
+                </button>
+            {% endif %}
+
+            {% if has_next_week %}
+                <a href="?week={{ week_offset|add:"1" }}" class="btn btn-primary">
+                    &#8594; <!-- Right Arrow -->
+                </a>
+            {% else %}
+                <button class="btn btn-primary" disabled>
+                    &#8594; <!-- Right Arrow -->
+                </button>
+            {% endif %}
+        </div>
+    </div>
+
     <div class="weekdays">
-        {% if messages %}
-            <div class="feedback-messages">
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
         {% for date, data in schedule.items %}
             <div class="day-container">
-                <h2>{{ data.day_name }} - {{ data.date|date:"F j, Y" }}</h2>
+                <h3>{{ data.day_name }} - {{ data.date|date:"d.m.Y" }}</h3>
 
                 {% if data.trainings %}
                     <div class="trainings">
-                        {% for entry in data.trainings %}
+                        {% for training in data.trainings %}
                             <div class="training-row">
                                 <p>
-                                    <strong>Time:</strong> {{ entry.training.date|date:"H:i" }} - {{ entry.training.end_time|date:"H:i" }}
-                                    <strong>Training:</strong> {{ entry.training.training.title }}
-                                    <strong>Instructor:</strong> {{ entry.training.training.instructor.get_full_name }}
+                                    <strong>Time:</strong> {{ training.date|date:"H:i" }}
+                                    - {{ training.end_time|date:"H:i" }}
+                                    <strong>Training:</strong> {{ training.training.title }}
+                                    <strong>Instructor:</strong> {{ training.training.instructor.get_full_name }}
                                 </p>
 
-                                {% if entry.training.has_passed %}
-                                    <button class="btn btn-secondary" disabled>Class Passed</button>
-                                {% elif user in entry.training.students.all %}
-                                    <form method="post" action="{% url 'cancel_reservation' entry.training.pk %}">
+                                {% if training.has_passed %}
+                                    <button class="btn btn-secondary" disabled>Class Ended</button>
+                                {% elif user in training.students.all %}
+                                    <form method="post" action="{% url 'cancel_reservation' training.pk %}">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-danger">Cancel Reservation</button>
                                     </form>
-                                {% elif entry.training.is_full %}
-                                    {% if user in entry.training.waiting_list.all %}
-                                        <form method="post"
-                                              action="{% url 'withdraw_waiting_list' entry.training.pk %}">
+                                {% elif training.is_full %}
+                                    {% if user in training.waiting_list.all %}
+                                        <form method="post" action="{% url 'withdraw_waiting_list' training.pk %}">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-secondary">
-                                                Withdraw from Waiting List (#{{ entry.waiting_list_position }})
+                                                Withdraw from Waiting List
                                             </button>
                                         </form>
                                     {% else %}
-                                        <form method="post" action="{% url 'join_waiting_list' entry.training.pk %}">
+                                        <form method="post" action="{% url 'join_waiting_list' training.pk %}">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-warning">Join Waiting List</button>
                                         </form>
                                     {% endif %}
                                 {% else %}
-                                    <form method="post" action="{% url 'make_reservation' entry.training.pk %}">
+                                    <form method="post" action="{% url 'make_reservation' training.pk %}">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-primary">Reserve Spot</button>
                                     </form>
@@ -63,4 +83,74 @@
             </div>
         {% endfor %}
     </div>
+
 {% endblock %}
+
+
+
+{#{% extends 'common/base.html' %}#}
+{#{% load static %}#}
+{##}
+{#{% block content %}#}
+{#    <div class="weekdays">#}
+{#        {% if messages %}#}
+{#            <div class="feedback-messages">#}
+{#                {% for message in messages %}#}
+{#                    <div class="alert alert-{{ message.tags }}">#}
+{#                        {{ message }}#}
+{#                    </div>#}
+{#                {% endfor %}#}
+{#            </div>#}
+{#        {% endif %}#}
+{#        {% for date, data in schedule.items %}#}
+{#            <div class="day-container">#}
+{#                <h2>{{ data.day_name }} - {{ data.date|date:"F j, Y" }}</h2>#}
+{##}
+{#                {% if data.trainings %}#}
+{#                    <div class="trainings">#}
+{#                        {% for entry in data.trainings %}#}
+{#                            <div class="training-row">#}
+{#                                <p>#}
+{#                                    <strong>Time:</strong> {{ entry.training.date|date:"H:i" }} - {{ entry.training.end_time|date:"H:i" }}#}
+{#                                    <strong>Training:</strong> {{ entry.training.training.title }}#}
+{#                                    <strong>Instructor:</strong> {{ entry.training.training.instructor.get_full_name }}#}
+{#                                </p>#}
+{##}
+{#                                {% if entry.training.has_passed %}#}
+{#                                    <button class="btn btn-secondary" disabled>Class Passed</button>#}
+{#                                {% elif user in entry.training.students.all %}#}
+{#                                    <form method="post" action="{% url 'cancel_reservation' entry.training.pk %}">#}
+{#                                        {% csrf_token %}#}
+{#                                        <button type="submit" class="btn btn-danger">Cancel Reservation</button>#}
+{#                                    </form>#}
+{#                                {% elif entry.training.is_full %}#}
+{#                                    {% if user in entry.training.waiting_list.all %}#}
+{#                                        <form method="post"#}
+{#                                              action="{% url 'withdraw_waiting_list' entry.training.pk %}">#}
+{#                                            {% csrf_token %}#}
+{#                                            <button type="submit" class="btn btn-secondary">#}
+{#                                                Withdraw from Waiting List (#{{ entry.waiting_list_position }})#}
+{#                                            </button>#}
+{#                                        </form>#}
+{#                                    {% else %}#}
+{#                                        <form method="post" action="{% url 'join_waiting_list' entry.training.pk %}">#}
+{#                                            {% csrf_token %}#}
+{#                                            <button type="submit" class="btn btn-warning">Join Waiting List</button>#}
+{#                                        </form>#}
+{#                                    {% endif %}#}
+{#                                {% else %}#}
+{#                                    <form method="post" action="{% url 'make_reservation' entry.training.pk %}">#}
+{#                                        {% csrf_token %}#}
+{#                                        <button type="submit" class="btn btn-primary">Reserve Spot</button>#}
+{#                                    </form>#}
+{#                                {% endif %}#}
+{#                            </div>#}
+{#                        {% endfor %}#}
+{#                    </div>#}
+{#                {% else %}#}
+{#                    <p>No trainings scheduled for this day.</p>#}
+{#                {% endif %}#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
+{#{% endblock %}#}
