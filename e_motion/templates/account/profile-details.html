@@ -42,8 +42,8 @@
                     {% if profile.next_training %}
                         <p><strong>Date:</strong> {{ profile.next_training.date|date:"F j, Y" }}</p>
                         <p><strong>Time:</strong> {{ profile.next_training.date|date:"H:i" }}</p>
-                        <p><strong>Class:</strong> {{ profile.next_training.title }}</p>
-                        <p><strong>Instructor:</strong> {{ profile.next_training.instructor }}</p>
+                        <p><strong>Class:</strong> {{ profile.next_training.training.title }}</p>
+                        <p><strong>Instructor:</strong> {{ profile.next_training.training.instructor }}</p>
                     {% else %}
                         <p>No upcoming training sessions.</p>
                     {% endif %}
@@ -57,7 +57,7 @@
                             {% for training in profile.attended_trainings.all %}
                                 <li>
                                     <strong>Date:</strong> {{ training.date|date:"F j, Y" }} -
-                                    <strong>Class:</strong> {{ training.title }}
+                                    <strong>Class:</strong> {{ training.training.title }}
                                 </li>
                             {% endfor %}
                         </ul>

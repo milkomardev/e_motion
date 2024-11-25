@@ -21,12 +21,10 @@ class UserRegisterView(CreateView):
     def form_valid(self, form):
         response = super().form_valid(form)
 
-        # Determine the backend for the user
         backend = 'e_motion.accounts.authentication.EmailOrUsernameBackend'
         if hasattr(self.object, 'backend'):
-            backend = self.object.backend  # If the user model already has a backend attribute
+            backend = self.object.backend
 
-        # Log the user in with the specified backend
         login(self.request, self.object, backend=backend)
         return response
 

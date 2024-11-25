@@ -7,12 +7,12 @@ from e_motion.accounts.validators import CapitalizedValidator
 class AppUser(AbstractUser):
     first_name = models.CharField(
         max_length=150,
-        validators=[CapitalizedValidator()],  # Apply the validator
+        validators=[CapitalizedValidator()],
         blank=True
     )
     last_name = models.CharField(
         max_length=150,
-        validators=[CapitalizedValidator()],  # Apply the validator
+        validators=[CapitalizedValidator()],
         blank=True
     )
 

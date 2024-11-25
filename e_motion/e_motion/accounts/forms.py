@@ -43,7 +43,7 @@ class ProfileEditForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)  # Extract the user instance if provided
+        user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
         if user:

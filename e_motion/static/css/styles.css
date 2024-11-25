@@ -597,7 +597,7 @@ form button[type="submit"]:hover {
 .week-navigation {
     width: 80%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
 }
@@ -649,3 +649,25 @@ form button[type="submit"]:hover {
     opacity: 0.9; /* Slight opacity change on hover */
 }
 
+/* Week Navigation Buttons */
+.week-navigation .btn i {
+    font-size: 1.2rem;
+    vertical-align: middle;
+}
+
+/* Training Row Action Buttons */
+.training-row .action-buttons {
+    display: inline-flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.training-row .action-buttons i {
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.training-row .action-buttons i:hover {
+    transform: scale(1.2);
+}

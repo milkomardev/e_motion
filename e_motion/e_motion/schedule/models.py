@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.timezone import now
@@ -14,7 +16,9 @@ class Schedule(models.Model):
 
     date = models.DateTimeField()
 
-    duration = models.DurationField()
+    duration = models.DurationField(
+        default=timedelta(hours=1)
+    )
 
     students = models.ManyToManyField(
         to=UserModel,

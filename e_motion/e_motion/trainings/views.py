@@ -5,8 +5,6 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from e_motion.trainings.forms import TrainingCreateForm, TrainingEditForm
 from e_motion.trainings.models import Training
 
-
-# Create your views here.
 class TrainingListView(ListView):
     model = Training
     template_name = 'trainings/trainings-list.html'
