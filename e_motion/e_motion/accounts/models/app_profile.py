@@ -57,8 +57,6 @@ class Profile(models.Model):
     attendance_limit = models.PositiveIntegerField(default=0, choices=AttendanceLimitChoices.choices)
     attendance_count = models.PositiveIntegerField(default=0)
 
-    # non_attendance_count = models.PositiveIntegerField(default=0)
-
     attended_trainings = models.ManyToManyField(
         to='schedule.Schedule',
         related_name='attended_trainings',

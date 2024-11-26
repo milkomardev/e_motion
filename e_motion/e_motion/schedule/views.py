@@ -15,30 +15,32 @@ class ScheduleView(ListView):
     model = Schedule
     template_name = 'schedule/schedule.html'
     context_object_name = 'schedule'
-    paginate_by = 7
+
+    def get_week_dates(self):
+        today = now().date()
+        start_of_current_week = today - timedelta(days=today.weekday())
+        week_offset = int(self.request.GET.get('week', 0))
+        week_start = start_of_current_week + timedelta(weeks=week_offset)
+
+        if week_start < start_of_current_week:
+            week_start = start_of_current_week
+
+        week_end = week_start + timedelta(days=6)
+        return week_start, week_end
 
     def get_queryset(self):
-        today = now().date()
-        start_of_week = today - timedelta(days=today.weekday())
-
-        week_offset = int(self.request.GET.get('week', 0))
-        week_start = start_of_week + timedelta(weeks=week_offset)
-        week_end = week_start + timedelta(days=6)
-
+        week_start, week_end = self.get_week_dates()
         return Schedule.objects.filter(date__date__gte=week_start, date__date__lte=week_end).order_by('date')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        today = now().date()
-        start_of_week = today - timedelta(days=today.weekday())
+        week_start, week_end = self.get_week_dates()
         week_offset = int(self.request.GET.get('week', 0))
-        week_start = start_of_week + timedelta(weeks=week_offset)
-        week_end = week_start + timedelta(days=6)
-        week_range = f"{week_start.strftime('%d.%m')} - {week_end.strftime('%d.%m')}"
 
+        week_range = f"{week_start.strftime('%d.%m')} - {week_end.strftime('%d.%m')}"
         has_next_week = Schedule.objects.filter(date__date__gt=week_end).exists()
-        has_previous_week = Schedule.objects.filter(date__date__lt=week_start).exists()
+        has_previous_week = week_offset > 0
 
         trainings = Schedule.objects.filter(date__date__gte=week_start, date__date__lte=week_end).order_by('date')
 
