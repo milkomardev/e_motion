@@ -1,11 +1,11 @@
 <nav>
     <ul>
         <li><a href="{% url 'trainings-list' %}">Activities</a></li>
-        <li><a href="#">Coaches</a></li>
+        <li><a href="{% url 'instructors-list' %}">Instructors</a></li>
         <li><a href="{% url 'schedule' %}">Schedule</a></li>
         <li><a href="#">Gallery</a></li>
         <li><a href="#">Pricing</a></li>
-        <li><a href="#">Contacts</a></li>
+        <li><a href="{% url 'contacts' %}">Contacts</a></li>
         {% if not request.user.is_authenticated %}
             <li>
                 <a href="{% url 'login' %}">
@@ -39,11 +39,11 @@
 <div class="mobile-menu" id="mobileMenu" style="display: none;">
     <ul>
         <li><a href="{% url 'trainings-list' %}">Activities</a></li>
-        <li><a href="#">Coaches</a></li>
+        <li><a href="{% url 'instructors-list' %}">Instructors</a></li>
         <li><a href="{% url 'schedule' %}">Schedule</a></li>
         <li><a href="#">Gallery</a></li>
         <li><a href="#">Pricing</a></li>
-        <li><a href="#">Contacts</a></li>
+        <li><a href="{% url 'contacts' %}">Contacts</a></li>
         {% if not request.user.is_authenticated %}
             <li>
                 <a href="{% url 'login' %}">

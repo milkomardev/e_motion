@@ -671,3 +671,56 @@ form button[type="submit"]:hover {
 .training-row .action-buttons i:hover {
     transform: scale(1.2);
 }
+
+
+/* Instructor Card Container */
+.instructor-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+    gap: 20px; /* Adjust the space between cards */
+}
+
+/* Individual Instructor Card */
+.instructor-card {
+    background-color: #f8f9fa; /* Light grey background */
+    border: 1px solid #ccc; /* Grey border */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow */
+    width: 300px; /* Fixed width, adjust as needed */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.instructor-card:hover {
+    transform: scale(1.05); /* Slightly scale up on hover */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2); /* Darker shadow on hover */
+}
+
+/* Instructor Image */
+.instructor-card img {
+    width: 100%; /* Full width of the card */
+    height: 200px; /* Fixed height, adjust as needed */
+    object-fit: cover; /* Ensures the image covers the area */
+    border-top-left-radius: 8px; /* Rounded top corners */
+    border-top-right-radius: 8px;
+}
+
+/* Instructor Info Section */
+.instructor-card h2, .instructor-card p {
+    padding: 10px; /* Padding inside the card */
+    margin: 0; /* Remove default margins */
+}
+
+.instructor-card h2 {
+    background-color: #333;
+    color: white; /* White text */
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+}
+
+.instructor-card p {
+    font-size: 16px; /* Medium font size */
+    color: #333; /* Dark grey text for visibility */
+}

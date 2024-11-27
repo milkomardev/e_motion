@@ -1,0 +1,17 @@
+{% extends 'common/base.html' %}
+
+
+{% block content %}
+    <h1>Instructors</h1>
+    <a href="{% url 'instructor-create' %}" class="btn btn-success">Add New Instructor</a>
+    <div class="instructor-container">
+        {% for instructor in instructors %}
+            <div class="instructor-card" onclick="location.href='{% url 'instructor-details' instructor.pk %}'">
+                <img src="{{ instructor.user.profile.profile_picture }}"
+                     alt="Picture of {{ instructor.user.get_full_name }}">
+                <h2>{{ instructor.user.get_full_name }}</h2>
+                <p>Teaching: {{ instructor.trainings.all|join:", " }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

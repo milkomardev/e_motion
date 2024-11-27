@@ -1,0 +1,17 @@
+{% extends 'common/base.html' %}
+
+{% block content %}
+    <div class="instructor-detail">
+        <img src="{{ instructor.user.profile.profile_picture }}" alt="Picture of {{ instructor.user.get_full_name }}">
+        <h1>{{ instructor.user.get_full_name }}</h1>
+        <p>{{ instructor.bio }}</p>
+        <h3>Classes:</h3>
+        <ul>
+            {% for training in instructor.trainings.all %}
+                <li>{{ training.title }}</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'instructor-edit' instructor.pk %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'instructor-delete' instructor.pk %}" class="btn btn-danger">Delete</a>
+    </div>
+{% endblock %}

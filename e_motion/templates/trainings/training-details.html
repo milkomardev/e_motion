@@ -14,7 +14,7 @@
         </div>
 
         <div class="training-instructor">
-            <h3>Instructor: {{ training.instructor.get_full_name }}</h3>
+            <h3>Instructor: {{ training.instructor.user.get_full_name }}</h3>
             <img src="{{ training.instructor.profile.profile_picture }}" alt="{{ training.instructor.get_full_name }}"
                  class="instructor-picture">
         </div>

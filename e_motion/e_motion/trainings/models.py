@@ -16,10 +16,10 @@ class Training(models.Model):
     picture = models.URLField()
 
     instructor = models.ForeignKey(
-        to=UserModel,
-        on_delete=models.SET_NULL,
+        to='instructors.Instructor',
+        on_delete=models.CASCADE,
         null=True,
-        related_name='instructor',
+        related_name='trainings',
     )
 
     def __str__(self):

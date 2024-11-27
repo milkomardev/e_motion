@@ -48,7 +48,7 @@
                                     <strong>Time:</strong> {{ training.date|date:"H:i" }}
                                     - {{ training.end_time|date:"H:i" }}
                                     <strong>Training:</strong> {{ training.training.title }}
-                                    <strong>Instructor:</strong> {{ training.training.instructor.get_full_name }}
+                                    <strong>Instructor:</strong> {{ training.training.instructor.user.get_full_name }}
                                 </p>
 
                                 <div class="action-buttons">
