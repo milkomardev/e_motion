@@ -8,4 +8,5 @@ urlpatterns = [
     path('trainings/', include('e_motion.trainings.urls')),
     path('schedule/', include('e_motion.schedule.urls')),
     path('instructors/', include('e_motion.instructors.urls')),
+    path('pricing/', include('e_motion.subscriptions.urls')),
 ]

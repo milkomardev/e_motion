@@ -781,3 +781,49 @@ form button[type="submit"]:hover {
     padding: 10px;
     text-align: center;
 }
+
+.subscriptions-container {
+    display: flex;
+    justify-content: space-around;  /* Distribute space evenly between columns */
+    align-items: flex-start;  /* Align items at the start of the flex container */
+    flex-wrap: wrap;  /* Allow wrapping if the screen is too small */
+    margin: 20px 0;
+    text-align: center;
+}
+
+.subscriptions-container .subscriptions-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.subscription-group {
+    background-color: #333;  /* Dark background for the subscription group */
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    width: 85%;
+    margin-bottom: 20px;
+}
+
+.subscription-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.pricing-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.pricing-table th, .pricing-table td {
+    border: 1px solid #FFFFFF;
+    padding: 8px;
+    text-align: center;
+}
+
+.pricing-table th {
+    background-color: #444;
+}

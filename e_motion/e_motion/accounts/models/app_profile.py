@@ -2,8 +2,8 @@ from django.utils.timezone import now
 
 from django.contrib.auth import get_user_model
 from django.db import models
+from datetime import timedelta
 
-from e_motion.accounts.choices import SubscriptionChoices, AttendanceLimitChoices
 from e_motion.accounts.validators import PhoneNumberValidator
 
 from cloudinary.models import CloudinaryField
@@ -46,18 +46,13 @@ class Profile(models.Model):
         null=True,
     )
 
-    subscription_active = models.BooleanField(
-        default=False,
-    )
-
-    subscription_plan = models.CharField(
-        max_length=30,
-        blank=True,
+    subscription_plan = models.ForeignKey(
+        to="subscriptions.SubscriptionPlan",
+        on_delete=models.SET_NULL,
         null=True,
-        choices=SubscriptionChoices.choices,
+        blank=True,
     )
 
-    attendance_limit = models.PositiveIntegerField(default=0, choices=AttendanceLimitChoices.choices)
     attendance_count = models.PositiveIntegerField(default=0)
 
     attended_trainings = models.ManyToManyField(
@@ -68,6 +63,12 @@ class Profile(models.Model):
 
     def next_training(self):
         return self.user.scheduled_trainings.filter(date__gte=now()).order_by('date').first()
+
+    def save(self, *args, **kwargs):
+        if self.subscription_plan and self.subscription_start_date and not self.subscription_end_date:
+            duration = timedelta(days=30 * self.subscription_plan.duration_months)
+            self.subscription_end_date = self.subscription_start_date + duration
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.user.get_full_name()}'s Profile"

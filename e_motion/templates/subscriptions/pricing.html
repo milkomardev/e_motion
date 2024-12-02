@@ -1,0 +1,63 @@
+{% extends "common/base.html" %}
+{% load subscription_tags %}
+
+{% block content %}
+<h1>Subscription Plans</h1>
+
+<div class="subscriptions-container">
+    <div class="subscriptions-column">
+        <h2>Regular Subscriptions</h2>
+        {% for duration, plans in regular_grouped_plans.items %}
+        <div class="subscription-group">
+            <h2 class="subscription-title">{{ duration }} Month Subscription</h2>
+            <table class="pricing-table">
+                <thead>
+                    <tr>
+                        <th>Number of Trainings</th>
+                        <th>Price per Training</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for plan in plans %}
+                    <tr>
+                        <td>{{ plan.attendance_limit }}</td>
+                        <td>${{ plan.price_per_training }}</td>
+                        <td>${{ plan.attendance_limit|multiply:plan.price_per_training }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="subscriptions-column">
+        <h2>Kids Subscriptions</h2>
+        {% for duration, plans in kids_grouped_plans.items %}
+        <div class="subscription-group">
+            <h2 class="subscription-title">{{ duration }} Month Subscription for Kids</h2>
+            <table class="pricing-table">
+                <thead>
+                    <tr>
+                        <th>Number of Trainings</th>
+                        <th>Price per Training</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for plan in plans %}
+                    <tr>
+                        <td>{{ plan.attendance_limit }}</td>
+                        <td>${{ plan.price_per_training }}</td>
+                        <td>${{ plan.attendance_limit|multiply:plan.price_per_training }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

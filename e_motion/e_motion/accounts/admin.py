@@ -15,10 +15,8 @@ class ProfileInline(admin.StackedInline):
         'phone_number',
         'date_of_birth',
         'subscription_plan',
-        'attendance_limit',
         'subscription_start_date',
         'subscription_end_date',
-        'subscription_active',
         'profile_picture',
     )
 

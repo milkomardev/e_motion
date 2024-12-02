@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'e_motion.trainings',
     'e_motion.schedule',
     'e_motion.instructors',
+    'e_motion.subscriptions',
 ]
 
 MIDDLEWARE = [
