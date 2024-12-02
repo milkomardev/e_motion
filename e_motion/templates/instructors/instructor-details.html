@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="instructor-detail">
-        <img src="{{ instructor.user.profile.profile_picture }}" alt="Picture of {{ instructor.user.get_full_name }}">
+        <img src="{{ instructor.user.profile.profile_picture.url }}" alt="Picture of {{ instructor.user.get_full_name }}">
         <h1>{{ instructor.user.get_full_name }}</h1>
         <p>{{ instructor.bio }}</p>
         <h3>Classes:</h3>

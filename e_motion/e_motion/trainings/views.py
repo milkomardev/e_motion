@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from e_motion.trainings.forms import TrainingCreateForm, TrainingEditForm
 from e_motion.trainings.models import Training
+
 
 class TrainingListView(ListView):
     model = Training
@@ -17,14 +18,14 @@ class TrainingDetailView(DetailView):
     context_object_name = 'training'
 
 
-class TrainingCreateView(CreateView):
+class TrainingCreateView(LoginRequiredMixin, CreateView):
     model = Training
     form_class = TrainingCreateForm
     template_name = 'trainings/training-create.html'
     success_url = reverse_lazy('trainings-list')
 
 
-class TrainingEditView(UpdateView):
+class TrainingEditView(LoginRequiredMixin, UpdateView):
     model = Training
     form_class = TrainingEditForm
     template_name = 'trainings/training-edit.html'
@@ -38,7 +39,7 @@ class TrainingEditView(UpdateView):
         )
 
 
-class TrainingDeleteView(DeleteView):
+class TrainingDeleteView(LoginRequiredMixin, DeleteView):
     model = Training
     template_name = 'trainings/training-delete.html'
     context_object_name = 'training'

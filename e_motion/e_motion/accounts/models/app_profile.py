@@ -6,6 +6,8 @@ from django.db import models
 from e_motion.accounts.choices import SubscriptionChoices, AttendanceLimitChoices
 from e_motion.accounts.validators import PhoneNumberValidator
 
+from cloudinary.models import CloudinaryField
+
 UserModel = get_user_model()
 
 
@@ -28,9 +30,10 @@ class Profile(models.Model):
         null=True,
     )
 
-    profile_picture = models.URLField(
+    profile_picture = CloudinaryField(
+        "image",
         blank=True,
-        null=True,
+        null=True
     )
 
     subscription_start_date = models.DateField(

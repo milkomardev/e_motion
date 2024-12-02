@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
@@ -18,14 +19,14 @@ class InstructorDetailView(DetailView):
     context_object_name = 'instructor'
 
 
-class InstructorCreateView(CreateView):
+class InstructorCreateView(LoginRequiredMixin, CreateView):
     model = Instructor
     form_class = InstructorCreateForm
     template_name = 'instructors/instructor-create.html'
     success_url = reverse_lazy('instructors-list')
 
 
-class InstructorUpdateView(UpdateView):
+class InstructorUpdateView(LoginRequiredMixin, UpdateView):
     model = Instructor
     form_class = InstructorUpdateForm
     template_name = 'instructors/instructor-edit.html'
@@ -35,7 +36,7 @@ class InstructorUpdateView(UpdateView):
         return reverse_lazy('instructor-details', kwargs={'pk': self.object.pk})
 
 
-class InstructorDeleteView(DeleteView):
+class InstructorDeleteView(LoginRequiredMixin, DeleteView):
     model = Instructor
     template_name = 'instructors/instructor-delete.html'
     context_object_name = 'instructor'

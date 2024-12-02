@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
@@ -65,26 +66,27 @@ class ScheduleView(ListView):
         return context
 
 
-class ScheduleCreateView(CreateView):
+class ScheduleCreateView(LoginRequiredMixin, CreateView):
     model = Schedule
     form_class = ScheduleCreateForm
     template_name = 'schedule/schedule-create.html'
     success_url = reverse_lazy('schedule')
 
 
-class ScheduleUpdateView(UpdateView):
+class ScheduleUpdateView(LoginRequiredMixin, UpdateView):
     model = Schedule
     form_class = ScheduleUpdateForm
     template_name = 'schedule/schedule-edit.html'
     success_url = reverse_lazy('schedule')
 
 
-class ScheduleDeleteView(DeleteView):
+class ScheduleDeleteView(LoginRequiredMixin, DeleteView):
     model = Schedule
     template_name = 'schedule/schedule-delete.html'
     success_url = reverse_lazy('schedule')
 
 
+@login_required
 def make_reservation(request, pk):
     training = get_object_or_404(Schedule, pk=pk)
 
@@ -99,6 +101,7 @@ def make_reservation(request, pk):
     return redirect(request.META.get('HTTP_REFERER', 'schedule'))
 
 
+@login_required
 def cancel_reservation(request, pk):
     training = get_object_or_404(Schedule, pk=pk)
     training.students.remove(request.user)
@@ -112,6 +115,7 @@ def cancel_reservation(request, pk):
     return redirect(request.META.get('HTTP_REFERER', 'schedule'))
 
 
+@login_required
 def join_waiting_list(request, pk):
     training = get_object_or_404(Schedule, pk=pk)
     if request.user in training.students.all():
@@ -122,6 +126,7 @@ def join_waiting_list(request, pk):
     return redirect(request.META.get('HTTP_REFERER', 'schedule'))
 
 
+@login_required
 def withdraw_waiting_list(request, pk):
     training = get_object_or_404(Schedule, pk=pk)
     if request.user in training.waiting_list.all():

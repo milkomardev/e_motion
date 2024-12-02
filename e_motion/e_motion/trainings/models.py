@@ -1,3 +1,4 @@
+from cloudinary.models import CloudinaryField
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -13,7 +14,7 @@ class Training(models.Model):
 
     description = models.TextField()
 
-    picture = models.URLField()
+    picture = CloudinaryField("image")
 
     instructor = models.ForeignKey(
         to='instructors.Instructor',
