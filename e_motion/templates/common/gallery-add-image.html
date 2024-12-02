@@ -1,0 +1,11 @@
+{% extends 'common/base.html' %}
+
+{% block content %}
+    <h1>Add Image</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Add</button>
+        <a href="{% url 'gallery-list' %}" class="btn btn-secondary">Back to Gallery</a>
+    </form>
+{% endblock %}
