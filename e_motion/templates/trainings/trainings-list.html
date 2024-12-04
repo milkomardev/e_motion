@@ -7,7 +7,7 @@
 
     <div class="training-cards">
         {% for training in trainings %}
-        <a href="{% url 'training-details' training.pk %}" class="training-card">
+        <a href="{% url 'training-details' training.slug %}" class="training-card">
             <div class="training-image">
                 <img src="{{ training.picture.url }}" alt="{{ training.name }}">
             </div>

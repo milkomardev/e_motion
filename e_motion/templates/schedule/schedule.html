@@ -47,8 +47,10 @@
                                 <p>
                                     <strong>Time:</strong> {{ training.date|date:"H:i" }}
                                     - {{ training.end_time|date:"H:i" }}
-                                    <strong>Training:</strong> {{ training.training_title }}
-                                    <strong>Instructor:</strong> {{ training.instructor_name }}
+                                    <a href="{% url 'training-details' training.training.slug %}"><strong>Training:</strong> {{ training.training_title }}
+                                    </a>
+                                    <a href="{% url 'profile-details' training.training.instructor.user.pk %}"><strong>Instructor:</strong> {{ training.instructor_name }}
+                                    </a>
                                 </p>
 
                                 <div class="action-buttons">
@@ -63,10 +65,14 @@
                                 {% if training.has_passed %}
                                     <button class="btn btn-secondary" disabled>Class Ended</button>
                                 {% elif user in training.students.all %}
-                                    <form method="post" action="{% url 'cancel-reservation' training.pk %}">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-danger">Cancel Reservation</button>
-                                    </form>
+                                    {% if training.can_cancel %}
+                                        <form method="post" action="{% url 'cancel-reservation' training.pk %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">Cancel Reservation</button>
+                                        </form>
+                                    {% else %}
+                                        <button class="btn btn-secondary" disabled>Cannot Cancel</button>
+                                    {% endif %}
                                 {% elif training.is_full %}
                                     {% if user in training.waiting_list.all %}
                                         <form method="post" action="{% url 'withdraw-waiting-list' training.pk %}">

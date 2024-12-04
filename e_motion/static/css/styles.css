@@ -520,6 +520,34 @@ form button[type="submit"]:hover {
     margin-bottom: 10px;
     background-color: #f9f9f9;
 }
+/* General link styling within the training-row */
+.training-row a {
+    color: #333; /* Change color as needed */
+    text-decoration: none; /* Removes underline */
+}
+
+/* Hover state for links within the training-row */
+.training-row a:hover {
+    text-decoration: none; /* Ensures underline does not appear on hover */
+    color: #555; /* Slightly darker on hover for better visibility, adjust as needed */
+}
+
+/* You might want to add specific styles for different types of links if they need distinct colors or effects */
+.training-row .text-primary {
+    color: #007bff; /* Bootstrap primary color for context */
+}
+
+.training-row .text-primary:hover {
+    color: #0056b3; /* Darker shade on hover */
+}
+
+.training-row .text-danger {
+    color: #dc3545; /* Bootstrap danger color for delete actions */
+}
+
+.training-row .text-danger:hover {
+    color: #c82333; /* Darker shade on hover */
+}
 
 .training-row form {
     display: inline-block; /* Makes the form behave like an inline element */

@@ -85,6 +85,9 @@ class Schedule(models.Model):
     def end_time(self):
         return self.date + self.duration
 
+    def can_cancel(self):
+        return self.date - timedelta(hours=3) > now()
+
     def is_full(self):
         return self.students.count() >= self.max_attendees
 
