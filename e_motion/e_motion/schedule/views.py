@@ -104,6 +104,12 @@ def make_reservation(request, pk):
 @login_required
 def cancel_reservation(request, pk):
     training = get_object_or_404(Schedule, pk=pk)
+    three_hours_before = training.date - timedelta(hours=3)
+
+    if now() >= three_hours_before:
+        messages.error(request, "Cancellation is not possible less than 3 hours before the class.")
+        return redirect(request.META.get('HTTP_REFERER', 'schedule'))
+
     training.students.remove(request.user)
 
     if training.waiting_list.exists():

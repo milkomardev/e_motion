@@ -1,17 +1,43 @@
 from datetime import timedelta
 
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import DateTimeField
 from django.utils.timezone import now
+from django.db.models import F, ExpressionWrapper
 
 UserModel = get_user_model()
+
+
+class ScheduleQuerySet(models.QuerySet):
+    def annotate_with_end_time(self):
+        return self.annotate(
+            date__add_duration=ExpressionWrapper(
+                F('date') + F('duration'),
+                output_field=DateTimeField()
+            )
+        )
 
 
 class Schedule(models.Model):
     training = models.ForeignKey(
         'trainings.Training',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='scheduled_instances',
+        null=True,
+    )
+
+    training_title = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+
+    instructor_name = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
     )
 
     date = models.DateTimeField()
@@ -33,6 +59,28 @@ class Schedule(models.Model):
         related_name='waiting_list_trainings',
         blank=True,
     )
+
+    objects = ScheduleQuerySet.as_manager()
+
+    def clean(self):
+        end_time = self.end_time()
+        overlapping_schedules = Schedule.objects.annotate_with_end_time().filter(
+            date__lt=end_time,
+            date__add_duration__gt=self.date
+        ).exclude(pk=self.pk)
+
+        if overlapping_schedules.exists():
+            raise ValidationError('This training overlaps with another training in the schedule.')
+
+    def save(self, *args, **kwargs):
+        self.clean()
+
+        if self.training:
+            self.training_title = self.training.title
+            self.instructor_name = self.training.instructor.user.get_full_name()
+            self.end_time = self.date + self.duration
+
+        super(Schedule, self).save(*args, **kwargs)
 
     def end_time(self):
         return self.date + self.duration
