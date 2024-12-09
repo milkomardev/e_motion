@@ -1,5 +1,6 @@
 {% extends 'common/base.html' %}
 {% load static %}
+{% load custom_tags %}
 
 {% block content %}
     <div class="container training-detail-container">
@@ -18,10 +19,12 @@
             <img src="{{ training.instructor.profile.profile_picture.url }}" alt="{{ training.instructor.get_full_name }}"
                  class="instructor-picture">
         </div>
-
-        <div class="training-actions">
+        {% if user|is_moderator %}
+            <div class="training-actions">
             <a href="{% url 'training-edit' training.slug %}" class="btn btn-primary">Edit</a>
             <a href="{% url 'training-delete' training.slug %}" class="btn btn-danger">Delete</a>
-        </div>
+            </div>
+        {% endif %}
+
     </div>
 {% endblock %}

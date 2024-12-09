@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -66,24 +66,33 @@ class ScheduleView(ListView):
         return context
 
 
-class ScheduleCreateView(LoginRequiredMixin, CreateView):
+class ScheduleCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Schedule
     form_class = ScheduleCreateForm
     template_name = 'schedule/schedule-create.html'
     success_url = reverse_lazy('schedule')
 
+    def test_func(self):
+        return self.request.user.has_perm("schedule.add_schedule")
 
-class ScheduleUpdateView(LoginRequiredMixin, UpdateView):
+
+class ScheduleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Schedule
     form_class = ScheduleUpdateForm
     template_name = 'schedule/schedule-edit.html'
     success_url = reverse_lazy('schedule')
 
+    def test_func(self):
+        return self.request.user.has_perm("schedule.change_schedule")
 
-class ScheduleDeleteView(LoginRequiredMixin, DeleteView):
+
+class ScheduleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Schedule
     template_name = 'schedule/schedule-delete.html'
     success_url = reverse_lazy('schedule')
+
+    def test_func(self):
+        return self.request.user.has_perm("schedule.delete_schedule")
 
 
 @login_required

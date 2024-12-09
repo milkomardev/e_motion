@@ -1,13 +1,17 @@
 {% extends 'common/base.html' %}
 {% load static %}
+{% load custom_tags %}
 
 {% block content %}
     <div class="week-navigation">
-        <div class="create-training-container">
-            <a href="{% url 'schedule-create' %}" class="btn btn-success">
-                <i class="fas fa-plus"></i>
-            </a>
-        </div>
+        {% if user|is_moderator %}
+            <div class="create-training-container">
+                <a href="{% url 'schedule-create' %}" class="btn btn-success">
+                    <i class="fas fa-plus"></i>
+                </a>
+            </div>
+        {% endif %}
+
         <div class="week-range">
             <h2>Week: {{ week_range }}</h2>
         </div>
@@ -52,16 +56,16 @@
                                     <a href="{% url 'profile-details' training.training.instructor.user.pk %}"><strong>Instructor:</strong> {{ training.instructor_name }}
                                     </a>
                                 </p>
-
-                                <div class="action-buttons">
-                                    <a href="{% url 'schedule-edit' training.pk %}" class="text-primary">
-                                        <i class="fas fa-pen"></i>
-                                    </a>
-                                    <a href="{% url 'schedule-delete' training.pk %}" class="text-danger">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </div>
-
+                                {% if user|is_moderator %}
+                                    <div class="action-buttons">
+                                        <a href="{% url 'schedule-edit' training.pk %}" class="text-primary">
+                                            <i class="fas fa-pen"></i>
+                                        </a>
+                                        <a href="{% url 'schedule-delete' training.pk %}" class="text-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                {% endif %}
                                 {% if training.has_passed %}
                                     <button class="btn btn-secondary" disabled>Class Ended</button>
                                 {% elif user in training.students.all %}

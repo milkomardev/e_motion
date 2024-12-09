@@ -1,10 +1,11 @@
 from django.contrib.auth import get_user_model, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic import CreateView, DetailView, UpdateView, ListView
 
 from e_motion.accounts.forms import AppUserCreationForm, ProfileEditForm
 from e_motion.accounts.models import Profile
@@ -55,12 +56,13 @@ class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     form_class = ProfileEditForm
 
     def test_func(self):
-        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
-        return self.request.user == profile.user
+        profile = get_object_or_404(Profile, pk=self.kwargs.get('pk'))
+        return (self.request.user == profile.user or
+                self.request.user.has_perm("accounts.change_profile"))
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.object.user
+        kwargs['user'] = self.request.user
         return kwargs
 
     def get_success_url(self):
@@ -94,4 +96,31 @@ class ProfileDeleteView(LoginRequiredMixin, UserPassesTestMixin, View):
 
     def test_func(self):
         profile = get_object_or_404(Profile, pk=self.kwargs.get('pk'))
-        return self.request.user == profile.user
+        return (self.request.user == profile.user or
+                self.request.user.has_perm("accounts.delete_profile"))
+
+
+class StudentsListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = Profile
+    template_name = 'account/students-list.html'
+    context_object_name = 'students'
+    paginate_by = 10
+
+    def test_func(self):
+        return self.request.user.groups.filter(name__in=["Moderator", "Receptionist"]).exists()
+
+    def get_queryset(self):
+        query = self.request.GET.get("q", "")
+        moderator_group = Group.objects.get(name="Moderator")
+        receptionist_group = Group.objects.get(name="Receptionist")
+        queryset = Profile.objects.exclude(
+            user__groups__in=[moderator_group, receptionist_group],
+
+        )
+        if query:
+            queryset = queryset.filter(
+                Q(user__first_name__icontains=query)
+                | Q(user__last_name__icontains=query)
+                | Q(user__email__icontains=query)
+            )
+        return queryset

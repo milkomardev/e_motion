@@ -37,6 +37,9 @@ class ProfileEditForm(forms.ModelForm):
             'phone_number',
             'date_of_birth',
             'profile_picture',
+            'subscription_plan',
+            'subscription_start_date',
+            'attendance_count',
         )
         widgets = {
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
@@ -44,12 +47,18 @@ class ProfileEditForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
+        profile = kwargs.get('instance')
         super().__init__(*args, **kwargs)
 
-        if user:
-            self.fields['email'].initial = user.email
-            self.fields['first_name'].initial = user.first_name
-            self.fields['last_name'].initial = user.last_name
+        if not (user.has_perm("accounts.change_profile") and not user.has_perm("accounts.change_user")):
+            self.fields.pop('subscription_plan')
+            self.fields.pop('subscription_start_date')
+            self.fields.pop('attendance_count')
+
+        if profile:
+            self.fields['email'].initial = profile.user.email
+            self.fields['first_name'].initial = profile.user.first_name
+            self.fields['last_name'].initial = profile.user.last_name
 
     def save(self, commit=True):
         profile = super().save(commit=False)

@@ -20,10 +20,17 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #333;
+    background: linear-gradient(to right, #3F6873, #152A30);
     color: #fff;
 }
 
+.footer-content {
+    background: linear-gradient(to right, #3F6873, #152A30);
+    display: flex;
+    justify-content: center;
+    padding: 1.5em;
+    color: #5396a6
+}
 /* Logo Styling */
 .header-content .logo img {
     height: 100px; /* Adjust height as needed */
@@ -47,13 +54,13 @@ body {
 }
 
 .header-content nav ul li a {
-    color: #fff;
+    color: #5396a6;
     text-decoration: none;
     padding: 8px 16px;
 }
 
 .header-content nav ul li a:hover {
-    background-color: #555;
+    background-color: #3F6873;
     border-radius: 4px;
 }
 
@@ -163,6 +170,7 @@ body {
     min-height: 100vh; /* Full viewport height */
     padding: 20px; /* Add some spacing */
     background-color: #f8f9fa; /* Optional background color */
+    color: #1f4449;
 }
 
 /* Form Styling */
@@ -256,12 +264,13 @@ form button[type="submit"]:hover {
     border-radius: 8px;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 420px
 }
 
 .profile-picture {
     width: 100%;
     max-width: 150px;
-    height: auto;
+    height: 150px;
     border-radius: 50%;
     margin-bottom: 20px;
 }
@@ -826,7 +835,7 @@ form button[type="submit"]:hover {
 }
 
 .subscription-group {
-    background-color: #333;  /* Dark background for the subscription group */
+    background: linear-gradient(to right, #3F6873, #152A30);
     color: white;
     padding: 20px;
     border-radius: 10px;
@@ -853,5 +862,6 @@ form button[type="submit"]:hover {
 }
 
 .pricing-table th {
-    background-color: #444;
+    background-color: #1c3a42;
 }
+

@@ -1,14 +1,19 @@
 {% extends "common/base.html" %}
+{% load custom_tags %}
 
 {% block content %}
     <h1>Gallery</h1>
-    <a href="{% url 'gallery-add' %}" class="btn btn-primary add-picture-btn">Add Picture</a>
+    {% if user|is_moderator or user|is_receptionist %}
+        <a href="{% url 'gallery-add' %}" class="btn btn-primary add-picture-btn">Add Picture</a>
+    {% endif %}
     <div class="image-container">
         {% for image in images %}
             <div class="image-card">
-                <button onclick="location.href='{% url 'gallery-delete' image.pk %}'" class="btn delete-btn">
+                {% if user|is_moderator %}
+                    <button onclick="location.href='{% url 'gallery-delete' image.pk %}'" class="btn delete-btn">
                     <i class="far fa-trash-alt fa-lg" style="color: #ffffff"></i>
                 </button>
+                {% endif %}
                 <img src="{{ image.image.url }}" alt="{{ image.title }}">
                 <div class="image-info">
                     <h3>{{ image.title }}</h3>

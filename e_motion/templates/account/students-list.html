@@ -1,0 +1,62 @@
+{% extends "common/base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h1>Students</h1>
+        <form method="get" action="{% url 'students' %}" class="search-bar">
+            <div class="search-container">
+                <input
+                        type="text"
+                        name="q"
+                        placeholder="Search students..."
+                        class="search-input"
+                        value="{{ request.GET.q }}"
+                >
+            </div>
+        </form>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>
+                        <a href="{% url 'profile-details' student.pk %}">
+                        {{ student.user.get_full_name }}
+                        </a>
+                    </td>
+                    <td>{{ student.user.email }}</td>
+                    <td>{{ student.phone_number }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function submit_search(e) {
+            let timeout = null
+
+            const form = document.querySelector(".search-bar")
+            const input = form.querySelector("input")
+
+            input.focus()
+            input.setSelectionRange(input.value.length, input.value.length)
+
+            input.addEventListener('input', (e) => {
+                clearTimeout(timeout)
+                timeout = setTimeout(() => {
+                    form.submit()
+                }, 1000)
+            })
+        }
+
+        submit_search()
+    </script>
+{% endblock %}

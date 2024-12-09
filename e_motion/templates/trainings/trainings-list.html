@@ -1,5 +1,6 @@
 {% extends 'common/base.html' %}
 {% load static %}
+{% load custom_tags %}
 
 {% block content %}
 <div class="container trainings-container">
@@ -15,9 +16,12 @@
         </a>
         {% endfor %}
 
-        <div class="create-training-wrapper">
-        <a href="{% url 'training-create' %}" class="btn-success create-training-button">Create Activity</a>
-        </div>
+        {% if user|is_moderator %}
+            <div class="create-training-wrapper">
+            <a href="{% url 'training-create' %}" class="btn-success create-training-button">Create Activity</a>
+            </div>
+        {% endif %}
+
     </div>
 </div>
 {% endblock %}

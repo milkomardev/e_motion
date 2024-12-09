@@ -1,10 +1,12 @@
 {% extends "common/base.html" %}
 {% load subscription_tags %}
+{% load custom_tags %}
 
 {% block content %}
 <h1>Subscription Plans</h1>
 
 <div class="subscriptions-container">
+
     <div class="subscriptions-column">
         <h2>Regular Subscriptions</h2>
         {% for duration, plans in regular_grouped_plans.items %}

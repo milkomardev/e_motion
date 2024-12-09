@@ -10,5 +10,6 @@ urlpatterns = [
         path('', views.ProfileDetailsView.as_view(), name='profile-details'),
         path('edit/', views.ProfileEditView.as_view(), name='profile-edit'),
         path('delete/', views.ProfileDeleteView.as_view(), name='profile-delete'),
-    ]))
+    ])),
+    path('students/', views.StudentsListView.as_view(), name='students'),
 ]

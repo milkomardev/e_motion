@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView, DeleteView
@@ -21,15 +22,20 @@ class GalleryListView(ListView):
     context_object_name = 'images'
 
 
-class GalleryCreateView(CreateView):
+class GalleryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = GalleryImage
     form_class = GalleryImageForm
     template_name = 'common/gallery-add-image.html'
     success_url = reverse_lazy('gallery-list')
 
+    def test_func(self):
+        return self.request.user.has_perm("common.add_galleryimage")
 
-class GalleryDeleteView(DeleteView):
+
+class GalleryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = GalleryImage
     template_name = 'common/gallery-delete-image.html'
     success_url = reverse_lazy('gallery-list')
 
+    def test_func(self):
+        return self.request.user.has_perm("common.delete_galleryimage")

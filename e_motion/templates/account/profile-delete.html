@@ -8,7 +8,7 @@
 
     <form method="post" action="{% url 'profile-delete' request.user.pk %}">
         {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Yes, Delete My Profile</button>
+        <button type="submit" class="btn btn-danger">Yes, delete Profile</button>
         <a href="{% url 'profile-details' request.user.pk %}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
