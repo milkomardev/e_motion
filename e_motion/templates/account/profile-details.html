@@ -44,6 +44,17 @@
 
 
             <div class="training-details">
+                <div class="next-training">
+                    <h4>Subscription Plan</h4>
+                    {% if profile.subscription_plan %}
+                        <p><strong>Type:</strong> {{ profile.subscription_plan.name }}
+                        <strong>Start date:</strong> {{ profile.subscription_start_date }}
+                        <strong>End date:</strong> {{ profile.subscription_end_date }}
+                        </p>
+                    {% else %}
+                        <p>Not subscribed yet.</p>
+                    {% endif %}
+                </div>
 
                 <div class="next-training">
                     <h4>Next Session</h4>

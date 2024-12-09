@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
@@ -43,6 +45,7 @@ class ProfileEditForm(forms.ModelForm):
         )
         widgets = {
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+            'subscription_start_date': forms.DateInput(attrs={'type': 'date'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -62,6 +65,11 @@ class ProfileEditForm(forms.ModelForm):
 
     def save(self, commit=True):
         profile = super().save(commit=False)
+
+        if profile.subscription_plan and profile.subscription_start_date:
+            duration = timedelta(days=30 * profile.subscription_plan.duration_months)
+            profile.subscription_end_date = profile.subscription_start_date + duration
+
         user = profile.user
 
         user.email = self.cleaned_data['email']
