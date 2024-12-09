@@ -65,7 +65,7 @@ class Profile(models.Model):
         return self.user.scheduled_trainings.filter(date__gte=now()).order_by('date').first()
 
     def save(self, *args, **kwargs):
-        if self.subscription_plan and self.subscription_start_date and not self.subscription_end_date:
+        if self.subscription_plan and self.subscription_start_date:
             duration = timedelta(days=30 * self.subscription_plan.duration_months)
             self.subscription_end_date = self.subscription_start_date + duration
         super().save(*args, **kwargs)

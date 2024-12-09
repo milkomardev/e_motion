@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
@@ -15,10 +17,18 @@ class ProfileInline(admin.StackedInline):
         'phone_number',
         'date_of_birth',
         'subscription_plan',
+        'attendance_count',
         'subscription_start_date',
         'subscription_end_date',
         'profile_picture',
     )
+
+    def save_model(self, request, obj, form, change):
+        if obj.subscription_plan and obj.subscription_start_date:
+            duration = timedelta(days=30 * obj.subscription_plan.duration_months)
+            obj.subscription_end_date = obj.subscription_start_date + duration
+        super().save_model(request, obj, form, change)
+
 
 
 @admin.register(UserModel)
