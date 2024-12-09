@@ -31,6 +31,15 @@
 </section>
 
 <main class="content-area">
+    {% if messages %}
+        <div class="feedback-messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
     {% block content %}
     {% endblock %}
 </main>
