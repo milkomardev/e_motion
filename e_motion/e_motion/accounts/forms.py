@@ -40,6 +40,7 @@ class ProfileEditForm(forms.ModelForm):
             'date_of_birth',
             'profile_picture',
             'subscription_plan',
+            'subscription_is_active',
             'subscription_start_date',
             'attendance_count',
         )
@@ -52,6 +53,8 @@ class ProfileEditForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         profile = kwargs.get('instance')
         super().__init__(*args, **kwargs)
+
+        self.fields['attendance_count'].widget.attrs['readonly'] = True
 
         if not (user.has_perm("accounts.change_profile") and not user.has_perm("accounts.change_user")):
             self.fields.pop('subscription_plan')

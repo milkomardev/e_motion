@@ -16,6 +16,7 @@ class Profile(models.Model):
         to=UserModel,
         on_delete=models.CASCADE,
         primary_key=True,
+        related_name='profile',
     )
 
     phone_number = models.CharField(
@@ -53,7 +54,13 @@ class Profile(models.Model):
         blank=True,
     )
 
-    attendance_count = models.PositiveIntegerField(default=0)
+    subscription_is_active = models.BooleanField(
+        default=False
+    )
+
+    attendance_count = models.PositiveIntegerField(
+        default=0
+    )
 
     attended_trainings = models.ManyToManyField(
         to='schedule.Schedule',

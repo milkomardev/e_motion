@@ -17,11 +17,14 @@ class ProfileInline(admin.StackedInline):
         'phone_number',
         'date_of_birth',
         'subscription_plan',
+        'subscription_is_active',
         'attendance_count',
         'subscription_start_date',
         'subscription_end_date',
         'profile_picture',
     )
+
+    readonly_fields = ('attendance_count',)
 
     def save_model(self, request, obj, form, change):
         if obj.subscription_plan and obj.subscription_start_date:

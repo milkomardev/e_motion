@@ -13,6 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer()
+    attendance_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Profile
@@ -20,11 +21,12 @@ class ProfileSerializer(serializers.ModelSerializer):
             'phone_number',
             'date_of_birth',
             'subscription_plan',
+            'subscription_is_active',
             'subscription_start_date',
             'subscription_end_date',
             'attendance_count',
             'attended_trainings',
-            'user'
+            'user',
         ]
 
     def update(self, instance, validated_data):

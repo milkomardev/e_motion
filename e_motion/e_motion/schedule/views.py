@@ -1,3 +1,4 @@
+from asgiref.sync import sync_to_async
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect
@@ -10,6 +11,9 @@ from datetime import timedelta
 
 from .forms import ScheduleCreateForm, ScheduleUpdateForm
 from .models import Schedule
+from .utils import fetch_training_and_profile, check_training_status, check_training_full, check_subscription_status, \
+    subscription_attendance_update
+from ..accounts.models import Profile
 
 
 class ScheduleView(ListView):
@@ -96,37 +100,26 @@ class ScheduleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 @login_required
-def make_reservation(request, pk):
-    training = get_object_or_404(Schedule, pk=pk)
+async def make_reservation(request, pk):
+    training, profile = await sync_to_async(fetch_training_and_profile)(request, pk)
 
-    if training.has_passed():
-        messages.error(request, "This class has already ended.")
-    elif training.is_full():
-        messages.error(request, "This class is full. Join the waiting list instead.")
-    else:
-        training.students.add(request.user)
-        messages.success(request, "Reservation successful!")
+    await sync_to_async(check_training_status)(request, training)
+    await sync_to_async(check_training_full)(request, training)
+    await sync_to_async(check_subscription_status)(profile, request, training)
 
+    await sync_to_async(training.students.add)(request.user)
+    await sync_to_async(messages.success)(request, "Reservation successful!")
     return redirect(request.META.get('HTTP_REFERER', 'schedule'))
 
 
 @login_required
-def cancel_reservation(request, pk):
-    training = get_object_or_404(Schedule, pk=pk)
-    three_hours_before = training.date - timedelta(hours=3)
+async def cancel_reservation(request, pk):
+    training, profile = await sync_to_async(fetch_training_and_profile)(request, pk)
 
-    if now() >= three_hours_before:
-        messages.error(request, "Cancellation is not possible less than 3 hours before the class.")
-        return redirect(request.META.get('HTTP_REFERER', 'schedule'))
+    await sync_to_async(training.students.remove)(request.user)
+    await sync_to_async(subscription_attendance_update)(profile, request, training)
 
-    training.students.remove(request.user)
-
-    if training.waiting_list.exists():
-        next_user = training.waiting_list.first()
-        training.waiting_list.remove(next_user)
-        training.students.add(next_user)
-
-    messages.success(request, "Reservation canceled.")
+    await sync_to_async(messages.success)(request, "Reservation cancelled.")
     return redirect(request.META.get('HTTP_REFERER', 'schedule'))
 
 
@@ -150,4 +143,3 @@ def withdraw_waiting_list(request, pk):
     else:
         messages.error(request, "You are not on the waiting list for this class.")
     return redirect(request.META.get('HTTP_REFERER', 'schedule'))
-
