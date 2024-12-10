@@ -30,9 +30,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    "crispy_forms",
-    "crispy_bootstrap4",
-    "cloudinary",
+    'crispy_forms',
+    'crispy_bootstrap4',
+    'cloudinary',
+    'rest_framework',
+    'channels',
 
     'e_motion.accounts',
     'e_motion.common',
@@ -72,6 +74,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'e_motion.wsgi.application'
+ASGI_APPLICATION = "e_motion.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -87,7 +90,6 @@ DATABASES = {
         "PORT": config('DB_PORT'),
     }
 }
-
 
 AUTHENTICATION_BACKENDS = [
     'e_motion.accounts.authentication.EmailOrUsernameBackend',
@@ -151,4 +153,3 @@ cloudinary.config(
     api_secret=config("API_SECRET"),
     secure=True
 )
-

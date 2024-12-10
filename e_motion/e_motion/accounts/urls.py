@@ -11,5 +11,11 @@ urlpatterns = [
         path('edit/', views.ProfileEditView.as_view(), name='profile-edit'),
         path('delete/', views.ProfileDeleteView.as_view(), name='profile-delete'),
     ])),
-    path('students/', views.StudentsListView.as_view(), name='students'),
+        path('students/', include([
+            path('', views.students_router_view, name='students-router'),
+            path("receptionist/", views.ReceptionistStudentsListView.as_view(), name="receptionist-students-list"),
+            path("moderator/", views.ModeratorStudentsListCreateAPIView.as_view(), name="moderator-students-api"),
+            path("moderator/<int:pk>/", views.ModeratorStudentDetailAPIView.as_view(), name="moderator-student-detail"),
+        ])),
+
 ]

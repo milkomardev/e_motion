@@ -69,6 +69,7 @@ class ProfileEditForm(forms.ModelForm):
         if profile.subscription_plan and profile.subscription_start_date:
             duration = timedelta(days=30 * profile.subscription_plan.duration_months)
             profile.subscription_end_date = profile.subscription_start_date + duration
+            profile.attendance_count = 0
 
         user = profile.user
 

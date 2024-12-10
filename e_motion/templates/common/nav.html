@@ -3,7 +3,7 @@
     <ul>
         {% if user.is_authenticated %}
             {% if user|is_moderator or user|is_receptionist %}
-                <li><a href="{% url 'students' %}">Students</a></li>
+                <li><a href="{% url 'students-router' %}">Students</a></li>
             {% endif %}
         {% endif %}
         <li><a href="{% url 'trainings-list' %}">Activities</a></li>
@@ -47,7 +47,7 @@
     <ul>
         {% if user.is_authenticated %}
             {% if user|is_moderator or user|is_receptionist %}
-                <li><a href="{% url 'students' %}">Students</a></li>
+                <li><a href="{% url 'students-router' %}">Students</a></li>
             {% endif %}
         {% endif %}
         <li><a href="{% url 'trainings-list' %}">Activities</a></li>

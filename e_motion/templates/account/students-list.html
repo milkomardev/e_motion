@@ -4,14 +4,17 @@
     <div class="container">
         <h1>Students</h1>
         <form method="get" action="{% url 'students' %}" class="search-bar">
-            <div class="search-container">
+            <div class="search-container" style="position: relative;">
                 <input
                         type="text"
                         name="q"
                         placeholder="Search students..."
                         class="search-input"
                         value="{{ request.GET.q }}"
+                        style="padding-right: 2.5rem;"
                 >
+                <i class="fas fa-search"
+                   style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #888;"></i>
             </div>
         </form>
 
@@ -28,7 +31,7 @@
                 <tr>
                     <td>
                         <a href="{% url 'profile-details' student.pk %}">
-                        {{ student.user.get_full_name }}
+                            {{ student.user.get_full_name }}
                         </a>
                     </td>
                     <td>{{ student.user.email }}</td>
@@ -37,6 +40,25 @@
             {% endfor %}
             </tbody>
         </table>
+
+        <div class="pagination">
+                <span class="step-links">
+
+                    {% if students.has_previous %}
+                        <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page=1">First</a>
+                        <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ students.previous_page_number }}">Previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ students.number }} of {{ students.paginator.num_pages }}
+                    </span>
+
+                    {% if students.has_next %}
+                        <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ students.next_page_number }}">Next</a>
+                        <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ students.paginator.num_pages }}">Last</a>
+                    {% endif %}
+                </span>
+        </div>
     </div>
 
     <script>

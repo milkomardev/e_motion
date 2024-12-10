@@ -27,8 +27,8 @@ class ProfileInline(admin.StackedInline):
         if obj.subscription_plan and obj.subscription_start_date:
             duration = timedelta(days=30 * obj.subscription_plan.duration_months)
             obj.subscription_end_date = obj.subscription_start_date + duration
+            obj.attendance_count = 0
         super().save_model(request, obj, form, change)
-
 
 
 @admin.register(UserModel)
