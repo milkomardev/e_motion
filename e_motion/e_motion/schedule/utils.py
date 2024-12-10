@@ -71,3 +71,10 @@ def subscription_attendance_update(profile, request, training):
             messages.success(request, "You now have one more Training available until you reach the limit.")
 
         profile.save()
+
+
+def check_for_next_user_in_waiting_list(training):
+    if training.waiting_list.exists():
+        next_user = training.waiting_list.first()
+        training.waiting_list.remove(next_user)
+        training.students.add(next_user)

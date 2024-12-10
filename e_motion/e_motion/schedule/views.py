@@ -12,7 +12,7 @@ from datetime import timedelta
 from .forms import ScheduleCreateForm, ScheduleUpdateForm
 from .models import Schedule
 from .utils import fetch_training_and_profile, check_training_status, check_training_full, check_subscription_status, \
-    subscription_attendance_update
+    subscription_attendance_update, check_for_next_user_in_waiting_list
 from ..accounts.models import Profile
 
 
@@ -112,6 +112,8 @@ async def make_reservation(request, pk):
     return redirect(request.META.get('HTTP_REFERER', 'schedule'))
 
 
+
+
 @login_required
 async def cancel_reservation(request, pk):
     training, profile = await sync_to_async(fetch_training_and_profile)(request, pk)
@@ -120,6 +122,7 @@ async def cancel_reservation(request, pk):
     await sync_to_async(subscription_attendance_update)(profile, request, training)
 
     await sync_to_async(messages.success)(request, "Reservation cancelled.")
+    await sync_to_async(check_for_next_user_in_waiting_list)(training)
     return redirect(request.META.get('HTTP_REFERER', 'schedule'))
 
 
