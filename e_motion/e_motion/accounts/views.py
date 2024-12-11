@@ -3,19 +3,18 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group
 from django.db.models import Q
-from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
+from django.utils.timezone import now
 from django.views import View
 from django.views.generic import CreateView, DetailView, UpdateView, ListView
-from rest_framework import status, generics
+from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.views import APIView
+
 
 from e_motion.accounts.forms import AppUserCreationForm, ProfileEditForm
 from e_motion.accounts.models import Profile
-from e_motion.accounts.permissions import IsModerator
+from e_motion.accounts.permissions import IsModerator, IsSuperAdmin
 from e_motion.accounts.serializers import ProfileSerializer
 
 UserModel = get_user_model()
@@ -51,8 +50,10 @@ class ProfileDetailsView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         profile = self.object
 
+        past_trainings = profile.attended_trainings.filter(date__lt=now()).order_by('-date')
+
         context['next_training'] = profile.next_training()
-        context['attended_trainings'] = profile.attended_trainings.all()
+        context['attended_trainings'] = past_trainings
 
         return context
 
@@ -121,8 +122,10 @@ class ReceptionistStudentsListView(LoginRequiredMixin, UserPassesTestMixin, List
         query = self.request.GET.get("q", "")
         moderator_group = Group.objects.get(name="Moderator")
         receptionist_group = Group.objects.get(name="Receptionist")
+        superadmin_group = Group.objects.get(name="Superadmin")
+
         queryset = Profile.objects.exclude(
-            user__groups__in=[moderator_group, receptionist_group],
+            user__groups__in=[moderator_group, receptionist_group, superadmin_group],
 
         )
         if query:
@@ -148,12 +151,12 @@ class ModeratorStudentsListCreateAPIView(generics.ListCreateAPIView):
     """
     List all students or create a new student (GET, POST).
     """
-    permission_classes = [IsAuthenticated, IsModerator]
+    permission_classes = [IsAuthenticated, IsModerator, IsSuperAdmin]
     serializer_class = ProfileSerializer
 
     def get_queryset(self):
         return Profile.objects.exclude(
-            user__groups__name__in=["Moderator", "Receptionist"]
+            user__groups__name__in=["Moderator", "Receptionist", "Superadmin"]
         )
 
 
@@ -161,21 +164,23 @@ class ModeratorStudentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     """
     Retrieve, update, or delete a specific student (GET, PUT, DELETE).
     """
-    permission_classes = [IsAuthenticated, IsModerator]
+    permission_classes = [IsAuthenticated, IsModerator, IsSuperAdmin]
     serializer_class = ProfileSerializer
     lookup_field = "pk"
 
     def get_queryset(self):
         return Profile.objects.exclude(
-            user__groups__name__in=["Moderator", "Receptionist"]
+            user__groups__name__in=["Moderator", "Receptionist", "Superadmin"]
         )
 
 
 @login_required
 def students_router_view(request):
-    if request.user.groups.filter(name="Moderator").exists():
+    if request.user.groups.filter(name__in=["Moderator", "Superadmin"]).exists():
         return redirect("moderator-students-api")
     elif request.user.groups.filter(name="Receptionist").exists():
         return redirect("receptionist-students-list")
     else:
         return redirect("home")
+
+

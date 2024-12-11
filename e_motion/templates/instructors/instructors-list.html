@@ -3,7 +3,7 @@
 
 {% block content %}
     <h1>Instructors</h1>
-    {% if user|is_moderator %}
+    {% if user|is_moderator or user|is_superuser %}
         <a href="{% url 'instructor-create' %}" class="btn btn-success">Add New Instructor</a>
     {% endif %}
 

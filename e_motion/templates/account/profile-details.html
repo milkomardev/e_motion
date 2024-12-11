@@ -31,10 +31,10 @@
 
                 <div class="profile-actions">
                 {% if user.is_authenticated %}
-                    {% if request.user == profile.user or user|is_receptionist or user|is_moderator %}
+                    {% if request.user == profile.user or user|is_receptionist or user|is_moderator or user|is_superuser %}
                         <a href="{% url 'profile-edit' profile.pk %}" class="btn btn-primary">Edit</a>
                     {% endif %}
-                    {% if request.user == profile.user or user|is_moderator %}
+                    {% if request.user == profile.user or user|is_moderator or user|is_superuser %}
                     	<a href="{% url 'profile-delete' profile.pk %}" class="btn btn-primary">Delete</a>
                     {% endif %}
                 {% endif %}
@@ -71,9 +71,9 @@
 
                 <div class="past-trainings">
                     <h4>Past Sessions</h4>
-                    {% if profile.attended_trainings.exists %}
+                    {% if attended_trainings.exists %}
                         <ul>
-                            {% for training in profile.attended_trainings.all %}
+                            {% for training in attended_trainings.all %}
                                 <li>
                                     <strong>Date:</strong> {{ training.date|date:"F j, Y" }} -
                                     <strong>Class:</strong> {{ training.training.title }}

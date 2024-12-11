@@ -16,7 +16,7 @@
         </a>
         {% endfor %}
 
-        {% if user|is_moderator %}
+        {% if user|is_moderator or user|is_superuser %}
             <div class="create-training-wrapper">
             <a href="{% url 'training-create' %}" class="btn-success create-training-button">Create Activity</a>
             </div>

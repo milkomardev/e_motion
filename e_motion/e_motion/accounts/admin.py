@@ -4,8 +4,10 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
+
 from e_motion.accounts.forms import AppUserChangeForm, AppUserCreationForm
 from e_motion.accounts.models import Profile
+
 
 UserModel = get_user_model()
 

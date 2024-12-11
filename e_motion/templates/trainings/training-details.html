@@ -19,7 +19,7 @@
             <img src="{{ training.instructor.profile.profile_picture.url }}" alt="{{ training.instructor.get_full_name }}"
                  class="instructor-picture">
         </div>
-        {% if user|is_moderator %}
+        {% if user|is_moderator or user|is_superuser %}
             <div class="training-actions">
             <a href="{% url 'training-edit' training.slug %}" class="btn btn-primary">Edit</a>
             <a href="{% url 'training-delete' training.slug %}" class="btn btn-danger">Delete</a>

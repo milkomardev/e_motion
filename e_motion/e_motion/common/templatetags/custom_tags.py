@@ -11,3 +11,8 @@ def is_moderator(user):
 @register.filter
 def is_receptionist(user):
     return user.groups.filter(name__in=["Receptionist"]).exists()
+
+
+@register.filter
+def is_superuser(user):
+    return user.is_superuser or user.groups.filter(name__in=["Superadmin"]).exists()

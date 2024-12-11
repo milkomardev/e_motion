@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="week-navigation">
-        {% if user|is_moderator %}
+        {% if user|is_moderator or user|is_superuser %}
             <div class="create-training-container">
                 <a href="{% url 'schedule-create' %}" class="btn btn-success">
                     <i class="fas fa-plus"></i>
@@ -56,7 +56,7 @@
                                     <a href="{% url 'profile-details' training.training.instructor.user.pk %}"><strong>Instructor:</strong> {{ training.instructor_name }}
                                     </a>
                                 </p>
-                                {% if user|is_moderator %}
+                                {% if user|is_moderator or user|is_superuser %}
                                     <div class="action-buttons">
                                         <a href="{% url 'schedule-edit' training.pk %}" class="text-primary">
                                             <i class="fas fa-pen"></i>

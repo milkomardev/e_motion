@@ -13,7 +13,6 @@ from .forms import ScheduleCreateForm, ScheduleUpdateForm
 from .models import Schedule
 from .utils import fetch_training_and_profile, check_training_status, check_training_full, check_subscription_status, \
     subscription_attendance_update, check_for_next_user_in_waiting_list
-from ..accounts.models import Profile
 
 
 class ScheduleView(ListView):
@@ -110,8 +109,6 @@ async def make_reservation(request, pk):
     await sync_to_async(training.students.add)(request.user)
     await sync_to_async(messages.success)(request, "Reservation successful!")
     return redirect(request.META.get('HTTP_REFERER', 'schedule'))
-
-
 
 
 @login_required

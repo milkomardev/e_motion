@@ -11,7 +11,7 @@
             <li>{{ training.title }}</li>
         {% endfor %}
     </ul>
-    {% if user|is_moderator %}
+    {% if user|is_moderator or user|is_superuser %}
         <a href="{% url 'instructor-edit' instructor.pk %}" class="btn btn-primary">Edit</a>
         <a href="{% url 'instructor-delete' instructor.pk %}" class="btn btn-danger">Delete</a>
     {% endif %}

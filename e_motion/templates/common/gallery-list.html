@@ -3,13 +3,13 @@
 
 {% block content %}
     <h1>Gallery</h1>
-    {% if user|is_moderator or user|is_receptionist %}
+    {% if user|is_moderator or user|is_receptionist or user|is_superuser %}
         <a href="{% url 'gallery-add' %}" class="btn btn-primary add-picture-btn">Add Picture</a>
     {% endif %}
     <div class="image-container">
         {% for image in images %}
             <div class="image-card">
-                {% if user|is_moderator %}
+                {% if user|is_moderator or user|is_superuser %}
                     <button onclick="location.href='{% url 'gallery-delete' image.pk %}'" class="btn delete-btn">
                     <i class="far fa-trash-alt fa-lg" style="color: #ffffff"></i>
                 </button>
