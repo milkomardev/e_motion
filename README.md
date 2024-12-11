@@ -6,6 +6,10 @@ Also they can make reservations for each class or to assign on a waitlist in cas
 
 
 •	Cloudinary used for images upload.
+
 •	The application must have a private part - Students page which only appears to Receptionists (standard view) and Moderators/Superadmins(API).
+
 •	Creating asynchronous view/s - make_reservation and cancel_reservation views in schedule app.
+
 •	Testing - tests for Schedule model and ScheduleView
+
