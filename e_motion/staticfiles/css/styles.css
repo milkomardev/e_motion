@@ -197,6 +197,10 @@ body {
     color: #1f4449;
 }
 
+.content-area.error-page {
+    background-color: #ffffff;
+}
+
 /* Form Styling */
 form {
     display: flex;

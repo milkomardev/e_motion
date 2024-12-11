@@ -30,7 +30,7 @@
 
 </section>
 
-<main class="content-area">
+<main class="content-area {% if body_class %}{{ body_class }}{% endif %}">
     {% if messages %}
         <div class="feedback-messages">
             {% for message in messages %}
