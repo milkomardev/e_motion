@@ -148,6 +148,9 @@ AUTH_USER_MODEL = 'accounts.AppUser'
 LOGIN_REDIRECT_URL = reverse_lazy('home')
 LOGOUT_REDIRECT_URL = reverse_lazy('home')
 
+# SESSION_COOKIE_HTTPONLY = True # позволява изпращането на session_key само през https
+# CSRF_COOKIE_HTTPONLY = True # Не позволява на бразъра да достъпва кукито през
+
 # Cloudinary Configuration
 cloudinary.config(
     cloud_name=config("CLOUD_NAME"),

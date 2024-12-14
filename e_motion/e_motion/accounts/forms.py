@@ -60,6 +60,7 @@ class ProfileEditForm(forms.ModelForm):
             self.fields.pop('subscription_plan')
             self.fields.pop('subscription_start_date')
             self.fields.pop('attendance_count')
+            self.fields.pop('subscription_is_active')
 
         if profile:
             self.fields['email'].initial = profile.user.email
